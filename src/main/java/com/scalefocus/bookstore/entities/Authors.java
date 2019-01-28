@@ -14,6 +14,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,6 +30,7 @@ import lombok.ToString;
 @EqualsAndHashCode(exclude = "books")
 @Entity
 @Table(name = "author")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Authors {
 
 	@Id
@@ -44,12 +48,5 @@ public class Authors {
 
 	@OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private final Set<Books> books = new HashSet<Books>();
-
-	public void addBook(Books book) {
-
-		if (book != null) {
-			books.add(book);
-		}
-	}
 
 }

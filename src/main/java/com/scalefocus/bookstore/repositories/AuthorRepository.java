@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.scalefocus.bookstore.entities.Authors;
 
 @Repository
-public interface AuthorRepository extends JpaRepository<Authors, Integer> {
+public interface AuthorRepository extends JpaRepository<Authors, Long> {
 
 }
