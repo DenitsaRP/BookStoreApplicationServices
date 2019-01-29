@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.scalefocus.bookstore.entities.Authors;
+import com.scalefocus.bookstore.enums.ErrorMessages;
+import com.scalefocus.bookstore.exceptions.BookStoreServiceException;
 import com.scalefocus.bookstore.repositories.AuthorRepository;
 import com.scalefocus.bookstore.service.IAuthorServices;
 
@@ -21,8 +23,10 @@ public class AuthorsServiceImpl implements IAuthorServices {
 	}
 
 	@Override
-	public Authors getAuthorById(Long id) {
-		return authorRepository.findById(id).orElse(null);
+	public Authors getAuthorById(Long author_id) throws BookStoreServiceException {
+		return authorRepository.findById(author_id)
+				.orElseThrow(() -> new BookStoreServiceException(ErrorMessages.AUTHOR_NOT_FOUND));
+
 	}
 
 	@Override

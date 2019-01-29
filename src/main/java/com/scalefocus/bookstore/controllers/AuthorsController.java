@@ -1,4 +1,4 @@
-package com.scalefocus.bookstore.controller;
+package com.scalefocus.bookstore.controllers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.scalefocus.bookstore.entities.Authors;
+import com.scalefocus.bookstore.exceptions.BookStoreServiceException;
 import com.scalefocus.bookstore.service.IAuthorServices;
 
 @RestController
@@ -22,7 +23,7 @@ public class AuthorsController {
 	@Autowired
 	private IAuthorServices authorService;
 
-	@GetMapping("")
+	@GetMapping
 	public List<Authors> getAllAuthors() {
 		try {
 			return authorService.getAuthorsInBookstore();
@@ -32,8 +33,8 @@ public class AuthorsController {
 		return new ArrayList<Authors>();
 	}
 
-	@GetMapping(value = "/{author_id}")
-	Authors getSingleAuthor(@PathVariable Long author_id) {
+	@GetMapping(value = "/{author_id}", produces = { MediaType.APPLICATION_JSON_VALUE })
+	public Authors getSingleAuthor(@PathVariable Long author_id) throws BookStoreServiceException {
 		return authorService.getAuthorById(author_id);
 	}
 

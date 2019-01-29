@@ -1,5 +1,6 @@
 package com.scalefocus.bookstore.entities;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -31,7 +32,7 @@ import lombok.ToString;
 @Entity
 @Table(name = "author")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-public class Authors {
+public class Authors implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import com.scalefocus.bookstore.entities.Authors;
 import com.scalefocus.bookstore.entities.Books;
+import com.scalefocus.bookstore.enums.ErrorMessages;
+import com.scalefocus.bookstore.exceptions.BookStoreServiceException;
 import com.scalefocus.bookstore.repositories.BooksRepository;
 import com.scalefocus.bookstore.service.IBooksService;
 
@@ -16,9 +18,12 @@ public class BooksServiceImpl implements IBooksService {
 	@Autowired
 	BooksRepository booksRepository;
 
+	// ErrorMessages exceptionCode = ErrorMessages.valueOf("BOOK_NOT_FOUND");
+
 	@Override
-	public Books getBookById(Long id) {
-		return booksRepository.findById(id).orElse(null);
+	public Books getBookById(Long id) throws BookStoreServiceException {
+		return booksRepository.findById(id)
+				.orElseThrow(() -> new BookStoreServiceException(ErrorMessages.BOOK_NOT_FOUND));
 	}
 
 	@Override
@@ -32,8 +37,9 @@ public class BooksServiceImpl implements IBooksService {
 	}
 
 	@Override
-	public Books setBookAuthor(Long bookId, Authors author) {
-		final Books book = booksRepository.findById(bookId).orElseGet(null);
+	public Books setBookAuthor(Long bookId, Authors author) throws BookStoreServiceException {
+		final Books book = booksRepository.findById(bookId)
+				.orElseThrow(() -> new BookStoreServiceException(ErrorMessages.BOOK_NOT_FOUND));
 
 		if (book != null && book.getAuthor() == null) {
 			book.setAuthor(author);
@@ -45,8 +51,9 @@ public class BooksServiceImpl implements IBooksService {
 	}
 
 	@Override
-	public Authors getAuthorByBookId(Long book_id) {
-		return booksRepository.findById(book_id).orElseThrow(() -> new BookNotFoundException(book_id)).getAuthor();
+	public Authors getAuthorByBookId(Long book_id) throws BookStoreServiceException {
+		return booksRepository.findById(book_id)
+				.orElseThrow(() -> new BookStoreServiceException(ErrorMessages.AUTHOR_NOT_FOUND)).getAuthor();
 	}
 
 }
