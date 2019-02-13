@@ -3,7 +3,8 @@ package com.scalefocus.bookstore.enums;
 public enum ErrorMessages {
 
 	BOOK_NOT_FOUND(101, "Book Not Found"), //
-	AUTHOR_NOT_FOUND(102, "Author Not Found");
+	AUTHOR_NOT_FOUND(102, "Author Not Found"), //
+	AUTHOR_ALREADY_EXISTS(103, "Author already exists!");
 
 	private final int id;
 	private final String message;

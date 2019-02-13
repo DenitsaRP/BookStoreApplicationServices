@@ -1,8 +1,5 @@
 package com.scalefocus.bookstore.controllers;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.scalefocus.bookstore.entities.Authors;
+import com.scalefocus.bookstore.entities.AuthorsList;
 import com.scalefocus.bookstore.exceptions.BookStoreServiceException;
 import com.scalefocus.bookstore.service.IAuthorServices;
 
@@ -23,14 +21,9 @@ public class AuthorsController {
 	@Autowired
 	private IAuthorServices authorService;
 
-	@GetMapping
-	public List<Authors> getAllAuthors() {
-		try {
-			return authorService.getAuthorsInBookstore();
-		} catch (final Exception e) {
-			e.printStackTrace();
-		}
-		return new ArrayList<Authors>();
+	@GetMapping(produces = { MediaType.APPLICATION_JSON_VALUE })
+	public AuthorsList getAllAuthors() {
+		return authorService.getAuthorsInBookstore();
 	}
 
 	@GetMapping(value = "/{author_id}", produces = { MediaType.APPLICATION_JSON_VALUE })
@@ -40,7 +33,7 @@ public class AuthorsController {
 
 	@PostMapping(name = "/addAuthor", consumes = { MediaType.APPLICATION_JSON_VALUE }, produces = {
 			MediaType.APPLICATION_JSON_VALUE })
-	Authors addAuthor(@RequestBody Authors newAuthor) {
+	Authors addAuthor(@RequestBody Authors newAuthor) throws BookStoreServiceException {
 		return authorService.addAuthors(newAuthor);
 	}
 

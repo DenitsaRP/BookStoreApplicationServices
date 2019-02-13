@@ -1,4 +1,4 @@
-package com.scalefocus.bookstore.exceptions;
+package com.scalefocus.bookstore.exceptions.handlers;
 
 import java.util.Date;
 
@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.scalefocus.bookstore.dao.responses.ErrorResponse;
+import com.scalefocus.bookstore.exceptions.BookStoreServiceException;
 
 @ControllerAdvice(basePackages = { "com.scalefocus.bookstore.controllers" })
 public class MyExceptionHandler {

@@ -1,24 +1,21 @@
 package com.scalefocus.bookstore.service.implementation;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.scalefocus.bookstore.entities.Authors;
 import com.scalefocus.bookstore.entities.Books;
+import com.scalefocus.bookstore.entities.BooksList;
 import com.scalefocus.bookstore.enums.ErrorMessages;
 import com.scalefocus.bookstore.exceptions.BookStoreServiceException;
 import com.scalefocus.bookstore.repositories.BooksRepository;
 import com.scalefocus.bookstore.service.IBooksService;
 
 @Service
-public class BooksServiceImpl implements IBooksService {
+public class BooksService implements IBooksService {
 
 	@Autowired
 	BooksRepository booksRepository;
-
-	// ErrorMessages exceptionCode = ErrorMessages.valueOf("BOOK_NOT_FOUND");
 
 	@Override
 	public Books getBookById(Long id) throws BookStoreServiceException {
@@ -27,8 +24,8 @@ public class BooksServiceImpl implements IBooksService {
 	}
 
 	@Override
-	public List<Books> getBooksInBookstore() {
-		return booksRepository.findAll();
+	public BooksList getBooksInBookstore() {
+		return new BooksList(booksRepository.findAll());
 	}
 
 	@Override
@@ -51,8 +48,8 @@ public class BooksServiceImpl implements IBooksService {
 	}
 
 	@Override
-	public Authors getAuthorByBookId(Long book_id) throws BookStoreServiceException {
-		return booksRepository.findById(book_id)
+	public Authors getAuthorByBookId(Long bookId) throws BookStoreServiceException {
+		return booksRepository.findById(bookId)
 				.orElseThrow(() -> new BookStoreServiceException(ErrorMessages.AUTHOR_NOT_FOUND)).getAuthor();
 	}
 

@@ -1,8 +1,5 @@
 package com.scalefocus.bookstore.controllers;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.scalefocus.bookstore.entities.Authors;
 import com.scalefocus.bookstore.entities.Books;
+import com.scalefocus.bookstore.entities.BooksList;
 import com.scalefocus.bookstore.exceptions.BookStoreServiceException;
 import com.scalefocus.bookstore.service.IBooksService;
 
@@ -25,37 +23,37 @@ public class BooksController {
 	@Autowired
 	private IBooksService booksService;
 
-	@GetMapping("")
-	public List<Books> getAllBooks() {
-		try {
-			return booksService.getBooksInBookstore();
-		} catch (final Exception e) {
-			e.printStackTrace();
-		}
-		return new ArrayList<Books>();
+	@GetMapping(produces = { MediaType.APPLICATION_JSON_VALUE })
+	public BooksList getAllBooks() {
+		return booksService.getBooksInBookstore();
 	}
 
-	@PostMapping(value = "", consumes = { MediaType.APPLICATION_JSON_VALUE }, produces = {
-			MediaType.APPLICATION_JSON_VALUE })
+	@PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE }, produces = { MediaType.APPLICATION_JSON_VALUE })
 	Books addBooks(@RequestBody Books newBook) {
 		return booksService.addBooks(newBook);
 	}
 
-	@GetMapping(value = "/{book_id}")
-	Books getSingleBook(@PathVariable Long book_id) throws Exception {
-		return booksService.getBookById(book_id);
+	@GetMapping(value = "/{book_id}", produces = { MediaType.APPLICATION_JSON_VALUE })
+	Books getSingleBook(@PathVariable Long bookId) throws Exception {
+		return booksService.getBookById(bookId);
 	}
 
-	@GetMapping(value = "/authorByBook/{book_id}")
-	Authors getAuthorOfTheBook(@PathVariable Long book_id) throws BookStoreServiceException {
-		return booksService.getAuthorByBookId(book_id);
+	@GetMapping(value = "/authorByBook/{bookId}", produces = { MediaType.APPLICATION_JSON_VALUE })
+	Authors getAuthorOfTheBook(@PathVariable Long bookId) throws BookStoreServiceException {
+		return booksService.getAuthorByBookId(bookId);
 	}
 
-	@PutMapping(value = "/setAuthor/{bookId}")
+	@PutMapping(value = "/setBook/{bookId}", consumes = { MediaType.APPLICATION_JSON_VALUE }, produces = {
+			MediaType.APPLICATION_JSON_VALUE })
 	public Books setBookAuthor(@RequestBody Authors author, @PathVariable Long bookId) throws Exception {
 		if (author != null) {
 			return booksService.setBookAuthor(bookId, author);
 		}
 		return null;
 	}
+
+//	@GetMapping("/string")
+//	public String getString() {
+//		return "WORKS!!!";
+//	}
 }

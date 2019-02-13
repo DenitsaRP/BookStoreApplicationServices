@@ -1,9 +1,8 @@
 package com.scalefocus.bookstore.service;
 
-import java.util.List;
-
 import com.scalefocus.bookstore.entities.Authors;
 import com.scalefocus.bookstore.entities.Books;
+import com.scalefocus.bookstore.entities.BooksList;
 import com.scalefocus.bookstore.exceptions.BookStoreServiceException;
 
 public interface IBooksService {
@@ -12,9 +11,9 @@ public interface IBooksService {
 
 	Books getBookById(Long id) throws BookStoreServiceException;
 
-	List<Books> getBooksInBookstore();
+	BooksList getBooksInBookstore();
 
 	Books addBooks(Books book);
 
-	Authors getAuthorByBookId(Long book_id) throws BookStoreServiceException;
+	Authors getAuthorByBookId(Long bookId) throws BookStoreServiceException;
 }
