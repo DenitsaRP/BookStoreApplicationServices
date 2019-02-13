@@ -41,7 +41,7 @@ public class BooksService implements IBooksService {
 		final Books book = booksRepository.findById(bookId)
 				.orElseThrow(() -> new BookStoreServiceException(ErrorMessages.BOOK_NOT_FOUND));
 
-		if (book != null && book.getAuthor() == null) {
+		if (book != null && book.getAuthor() == null && author != null) {
 			book.setAuthor(author);
 			booksRepository.save(book);
 			return book;

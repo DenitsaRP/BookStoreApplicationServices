@@ -60,6 +60,11 @@ public class BooksServiceTest {
 		book = booksService.setBookAuthor(null, author);
 	}
 
+	@Test(expected = BookStoreServiceException.class)
+	public void setBookNullAuthorIdTest() throws BookStoreServiceException {
+		book = booksService.setBookAuthor(Mockito.anyLong(), null);
+	}
+
 	@Test
 	@Ignore
 	public void setBookAuthorErrorTest() {
@@ -116,7 +121,7 @@ public class BooksServiceTest {
 
 	@Test(expected = BookStoreServiceException.class)
 	public void addNullBookTest() throws BookStoreServiceException {
-		booksService.addBooks(null);
+		book = booksService.addBooks(null);
 
 	}
 
