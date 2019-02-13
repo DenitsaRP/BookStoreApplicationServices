@@ -13,7 +13,7 @@ public interface IBooksService {
 
 	BooksList getBooksInBookstore();
 
-	Books addBooks(Books book);
+	Books addBooks(Books book) throws BookStoreServiceException;
 
 	Authors getAuthorByBookId(Long bookId) throws BookStoreServiceException;
 }

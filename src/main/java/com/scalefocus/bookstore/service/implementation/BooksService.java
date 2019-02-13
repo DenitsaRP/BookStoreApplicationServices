@@ -29,7 +29,10 @@ public class BooksService implements IBooksService {
 	}
 
 	@Override
-	public Books addBooks(Books book) {
+	public Books addBooks(Books book) throws BookStoreServiceException {
+		if (book == null) {
+			throw new BookStoreServiceException(ErrorMessages.NULL_VALUE);
+		}
 		return booksRepository.save(book);
 	}
 

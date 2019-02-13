@@ -60,11 +60,6 @@ public class BooksServiceTest {
 		book = booksService.setBookAuthor(null, author);
 	}
 
-	@Test(expected = BookStoreServiceException.class)
-	public void setBookAuthorNottest() throws BookStoreServiceException{
-		book = booksService.setBookAuthor(bookId, author)
-	}
-
 	@Test
 	@Ignore
 	public void setBookAuthorErrorTest() {
@@ -92,8 +87,13 @@ public class BooksServiceTest {
 		assertNotNull(book);
 	}
 
+	@Test(expected = BookStoreServiceException.class)
+	public void getBookByIdNullTest() throws BookStoreServiceException {
+		book = booksService.getBookById(null);
+	}
+
 	@Test
-	public void getAuthorByBookIdtest() throws BookStoreServiceException {
+	public void getAuthorByBookIdTest() throws BookStoreServiceException {
 		final Optional<Books> optionalBook = Optional.ofNullable(book);
 		Mockito.when(booksRepository.findById(Mockito.anyLong())).thenReturn(optionalBook);
 		author = booksService.getAuthorByBookId(1L);
@@ -102,11 +102,22 @@ public class BooksServiceTest {
 	}
 
 	@Test
-	public void addBooktest() {
+	public void getNullAuthorByBookIdTest() throws BookStoreServiceException {
+		author = booksService.getAuthorByBookId(null);
+	}
+
+	@Test
+	public void addBookTest() throws BookStoreServiceException {
 		Mockito.when(booksRepository.save(Mockito.any(Books.class))).thenReturn(book);
 		final Books bookresult = booksService.addBooks(book);
 		assertEquals(bookresult, book);
 		assertNotNull(bookresult);
+	}
+
+	@Test(expected = BookStoreServiceException.class)
+	public void addNullBookTest() throws BookStoreServiceException {
+		booksService.addBooks(null);
+
 	}
 
 }

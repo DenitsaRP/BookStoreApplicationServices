@@ -4,7 +4,8 @@ public enum ErrorMessages {
 
 	BOOK_NOT_FOUND(101, "Book Not Found"), //
 	AUTHOR_NOT_FOUND(102, "Author Not Found"), //
-	AUTHOR_ALREADY_EXISTS(103, "Author already exists!");
+	AUTHOR_ALREADY_EXISTS(103, "Author already exists!"), //
+	NULL_VALUE(104, "Please, enter correct data!");
 
 	private final int id;
 	private final String message;
