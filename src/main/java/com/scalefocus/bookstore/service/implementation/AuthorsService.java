@@ -23,6 +23,9 @@ public class AuthorsService implements IAuthorServices {
 
 	@Override
 	public Authors getAuthorById(Long authorId) throws BookStoreServiceException {
+		if (authorId == null) {
+			throw new BookStoreServiceException(ErrorMessages.NULL_VALUE);
+		}
 		return authorRepository.findById(authorId)
 				.orElseThrow(() -> new BookStoreServiceException(ErrorMessages.AUTHOR_NOT_FOUND));
 
@@ -30,6 +33,9 @@ public class AuthorsService implements IAuthorServices {
 
 	@Override
 	public Authors addAuthors(Authors author) throws BookStoreServiceException {
+		if (author == null) {
+			throw new BookStoreServiceException(ErrorMessages.NULL_VALUE);
+		}
 		final Authors findByName = authorRepository.findByName(author.getName());
 		if (findByName != null) {
 			throw new BookStoreServiceException(ErrorMessages.AUTHOR_ALREADY_EXISTS);

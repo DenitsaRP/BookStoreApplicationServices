@@ -8,4 +8,6 @@ import com.scalefocus.bookstore.entities.Books;
 @Repository
 public interface BooksRepository extends JpaRepository<Books, Long> {
 
+	public Books findByName(String name);
+
 }

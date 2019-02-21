@@ -18,8 +18,12 @@ import com.scalefocus.bookstore.service.IAuthorServices;
 @RequestMapping("/authors")
 public class AuthorsController {
 
+	private final IAuthorServices authorService;
+
 	@Autowired
-	private IAuthorServices authorService;
+	public AuthorsController(IAuthorServices authorServices) {
+		this.authorService = authorServices;
+	}
 
 	@GetMapping(produces = { MediaType.APPLICATION_JSON_VALUE })
 	public AuthorsList getAllAuthors() {
@@ -33,7 +37,7 @@ public class AuthorsController {
 
 	@PostMapping(name = "/addAuthor", consumes = { MediaType.APPLICATION_JSON_VALUE }, produces = {
 			MediaType.APPLICATION_JSON_VALUE })
-	Authors addAuthor(@RequestBody Authors newAuthor) throws BookStoreServiceException {
+	public Authors addAuthor(@RequestBody Authors newAuthor) throws BookStoreServiceException {
 		return authorService.addAuthors(newAuthor);
 	}
 

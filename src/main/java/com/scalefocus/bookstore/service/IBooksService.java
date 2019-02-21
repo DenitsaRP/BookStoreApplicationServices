@@ -11,7 +11,7 @@ public interface IBooksService {
 
 	Books getBookById(Long id) throws BookStoreServiceException;
 
-	BooksList getBooksInBookstore();
+	BooksList getAllBooksInBookstore();
 
 	Books addBooks(Books book) throws BookStoreServiceException;
 

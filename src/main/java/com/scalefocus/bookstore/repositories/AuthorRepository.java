@@ -9,5 +9,4 @@ import com.scalefocus.bookstore.entities.Authors;
 public interface AuthorRepository extends JpaRepository<Authors, Long> {
 
 	public Authors findByName(String name);
-
 }

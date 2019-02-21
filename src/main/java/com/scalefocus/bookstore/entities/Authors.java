@@ -32,7 +32,7 @@ public class Authors implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "author_id")
-	private long id;
+	private Long id;
 
 	@NotNull
 	@Column(name = "name")

@@ -20,32 +20,37 @@ import com.scalefocus.bookstore.service.IBooksService;
 @RequestMapping("/books")
 public class BooksController {
 
+	private final IBooksService booksService;
+
 	@Autowired
-	private IBooksService booksService;
+	public BooksController(IBooksService booksService) {
+		this.booksService = booksService;
+	}
 
 	@GetMapping(produces = { MediaType.APPLICATION_JSON_VALUE })
 	public BooksList getAllBooks() {
-		return booksService.getBooksInBookstore();
-	}
-
-	@PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE }, produces = { MediaType.APPLICATION_JSON_VALUE })
-	Books addBooks(@RequestBody Books newBook) {
-		return booksService.addBooks(newBook);
+		return booksService.getAllBooksInBookstore();
 	}
 
 	@GetMapping(value = "/{book_id}", produces = { MediaType.APPLICATION_JSON_VALUE })
-	Books getSingleBook(@PathVariable Long bookId) throws Exception {
+	public Books getSingleBook(@PathVariable Long bookId) throws BookStoreServiceException {
 		return booksService.getBookById(bookId);
 	}
 
 	@GetMapping(value = "/authorByBook/{bookId}", produces = { MediaType.APPLICATION_JSON_VALUE })
-	Authors getAuthorOfTheBook(@PathVariable Long bookId) throws BookStoreServiceException {
+	public Authors getAuthorOfTheBook(@PathVariable Long bookId) throws BookStoreServiceException {
 		return booksService.getAuthorByBookId(bookId);
+	}
+
+	@PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE }, produces = { MediaType.APPLICATION_JSON_VALUE })
+	public Books addBooks(@RequestBody Books newBook) throws BookStoreServiceException {
+		return booksService.addBooks(newBook);
 	}
 
 	@PutMapping(value = "/setBook/{bookId}", consumes = { MediaType.APPLICATION_JSON_VALUE }, produces = {
 			MediaType.APPLICATION_JSON_VALUE })
-	public Books setBookAuthor(@RequestBody Authors author, @PathVariable Long bookId) throws Exception {
+	public Books setBookAuthor(@RequestBody Authors author, @PathVariable Long bookId)
+			throws BookStoreServiceException {
 		if (author != null) {
 			return booksService.setBookAuthor(bookId, author);
 		}
