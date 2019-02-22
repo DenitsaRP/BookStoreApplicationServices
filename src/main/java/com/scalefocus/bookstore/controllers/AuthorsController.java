@@ -2,6 +2,7 @@ package com.scalefocus.bookstore.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,6 +40,11 @@ public class AuthorsController {
 			MediaType.APPLICATION_JSON_VALUE })
 	public Authors addAuthor(@RequestBody Authors newAuthor) throws BookStoreServiceException {
 		return authorService.addAuthors(newAuthor);
+	}
+
+	@DeleteMapping(value = "/delete/{authorId}")
+	public void deleteAuthorById(@PathVariable Long authorId) throws BookStoreServiceException {
+		authorService.deleteAuthorById(authorId);
 	}
 
 }

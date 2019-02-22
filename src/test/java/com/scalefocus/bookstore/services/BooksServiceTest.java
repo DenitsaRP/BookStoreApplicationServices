@@ -48,6 +48,41 @@ public class BooksServiceTest {
 	}
 
 	@Test
+	public void shouldGetAllBooksInBookstoreTest() {
+		booksList = new BooksList(Arrays.asList(book));
+		Mockito.when(booksRepository.findAll()).thenReturn(booksList.getListBooks());
+
+		final BooksList booksListResult = booksService.getAllBooksInBookstore();
+
+		Mockito.verify(booksRepository, Mockito.times(1)).findAll();
+		assertEquals(booksListResult.getListBooks(), booksList.getListBooks());
+		assertEquals(1, booksListResult.getListBooks().size());
+	}
+
+	@Test
+	public void shouldGetBookByIdTest() throws BookStoreServiceException {
+		final Optional<Books> optionalBook = Optional.ofNullable(book);
+		Mockito.when(booksRepository.findById(book.getId())).thenReturn(optionalBook);
+
+		book = booksService.getBookById(1L);
+
+		assertEquals(book, optionalBook.get());
+		assertNotNull(optionalBook.get());
+		assertNotNull(book);
+	}
+
+	@Test
+	public void shouldGetAuthorByBookIdTest() throws BookStoreServiceException {
+		final Optional<Books> optionalBook = Optional.ofNullable(book);
+		Mockito.when(booksRepository.findById(book.getId())).thenReturn(optionalBook);
+
+		author = booksService.getAuthorByBookId(1L);
+
+		assertEquals(author, optionalBook.get().getAuthor());
+		assertNotNull(optionalBook.get());
+	}
+
+	@Test
 	public void shouldSetBookAuthorTest() throws BookStoreServiceException {
 		final Optional<Books> optionalBook = Optional.ofNullable(bookSetAuthor);
 		Mockito.when(booksRepository.findById(bookSetAuthor.getId())).thenReturn(optionalBook);
@@ -62,45 +97,17 @@ public class BooksServiceTest {
 	}
 
 	@Test
-	public void shouldGetAllBooksInBookstoreTest() {
-		booksList = new BooksList(Arrays.asList(book));
-		Mockito.when(booksRepository.findAll()).thenReturn(booksList.getListBooks());
-		final BooksList booksListResult = booksService.getAllBooksInBookstore();
-		Mockito.verify(booksRepository, Mockito.times(1)).findAll();
-		assertEquals(booksListResult.getListBooks(), booksList.getListBooks());
-		assertEquals(1, booksListResult.getListBooks().size());
-
-	}
-
-	@Test
-	public void shouldGetBookByIdTest() throws BookStoreServiceException {
-		final Optional<Books> optionalBook = Optional.ofNullable(book);
-		Mockito.when(booksRepository.findById(book.getId())).thenReturn(optionalBook);
-		book = booksService.getBookById(1L);
-		assertEquals(book, optionalBook.get());
-		assertNotNull(optionalBook.get());
-		assertNotNull(book);
-	}
-
-	@Test
-	public void shouldGetAuthorByBookIdTest() throws BookStoreServiceException {
-		final Optional<Books> optionalBook = Optional.ofNullable(book);
-		Mockito.when(booksRepository.findById(book.getId())).thenReturn(optionalBook);
-		author = booksService.getAuthorByBookId(1L);
-		assertEquals(author, optionalBook.get().getAuthor());
-		assertNotNull(optionalBook.get());
-	}
-
-	@Test
 	public void shouldAddBookTest() throws BookStoreServiceException {
 		Mockito.when(booksRepository.save(Mockito.any(Books.class))).thenReturn(book);
+
 		final Books bookresult = booksService.addBooks(book);
+
 		assertEquals(bookresult, book);
 		assertNotNull(bookresult);
 	}
 
 	@Test
-	public void shouldThrowNullValueExceptionWhenYouWantToSetAuthorToTheBookAndBookIdIsNullTest() {
+	public void shouldThrowExceptionWhenSetAuthorToBookWithBookIdTest() {
 		bookSetAuthor.setId(null);
 		try {
 			booksService.setBookAuthor(bookSetAuthor.getId(), author);
@@ -111,7 +118,7 @@ public class BooksServiceTest {
 	}
 
 	@Test
-	public void shouldThrowNullValueExceptionWhenYouWantToSetAuthorToTheBookAndAuthorIsNullTest() {
+	public void shouldThrowExceptionWhenSetNullAuthorToTheBookTest() {
 		author = null;
 		try {
 			booksService.setBookAuthor(bookSetAuthor.getId(), author);
@@ -122,7 +129,7 @@ public class BooksServiceTest {
 	}
 
 	@Test
-	public void shouldThrowBookNotFoundExceptionWhenSetBookAuthorAndBookNotFoundByIdTest() {
+	public void shouldThrowExceptionWhenSetBookAuthorToBookWithNotCorrectIdTest() {
 		try {
 			booksService.setBookAuthor(100L, author);
 		} catch (final BookStoreServiceException e) {
@@ -132,9 +139,10 @@ public class BooksServiceTest {
 	}
 
 	@Test
-	public void shouldThrowIncorectDataExceptionWhenBookIsNullTest() {
+	public void shouldThrowExceptionWhenBookAlreadyHasAuthorTest() {
 		final Optional<Books> optionalBook = Optional.ofNullable(book);
 		Mockito.when(booksRepository.findById(book.getId())).thenReturn(optionalBook);
+
 		try {
 			booksService.setBookAuthor(book.getId(), author);
 		} catch (final BookStoreServiceException e) {
@@ -144,7 +152,7 @@ public class BooksServiceTest {
 	}
 
 	@Test
-	public void shouldThrowNullvalueExceptionWhenFindByBookIdIsNullTest() {
+	public void shouldThrowNullvalueExceptionWhenFindBookByNullIdTest() {
 		book.setId(null);
 		try {
 			booksService.getBookById(book.getId());
@@ -155,7 +163,7 @@ public class BooksServiceTest {
 	}
 
 	@Test
-	public void shouldThrowBookNotFoundExceptionWhenBookIdIsWrongTest() {
+	public void shouldThrowExceptionWhenGetBookWithNotCorrectIdTest() {
 		book.setId(250L);
 		try {
 			booksService.getBookById(book.getId());
@@ -166,7 +174,7 @@ public class BooksServiceTest {
 	}
 
 	@Test
-	public void shouldThrowNullValueExceptionWhenNullBookIsAddedTest() {
+	public void shouldThrowExceptionWhenNullBookIsAddedTest() {
 		book = null;
 		try {
 			booksService.addBooks(book);
@@ -187,7 +195,7 @@ public class BooksServiceTest {
 	}
 
 	@Test
-	public void shoutdThrowNullvalueExceptionWhenGetAuthorByNullBookIdTest() {
+	public void shoutdThrowExceptionWhenGetAuthorByNullBookIdTest() {
 		book.setId(null);
 		try {
 			booksService.getAuthorByBookId(book.getId());
@@ -198,7 +206,7 @@ public class BooksServiceTest {
 	}
 
 	@Test
-	public void shouldThrowAuthorNotFoundExceptionWhenGetAuthorByIncorrectBookIdTest() {
+	public void shouldThrowExceptionWhenGetAuthorWithNotCorrectBookIdTest() {
 		book.setId(250L);
 		final Optional<Books> optionalBook = Optional.ofNullable(book);
 		Mockito.when(booksRepository.findById(book.getId())).thenReturn(optionalBook);
@@ -211,7 +219,7 @@ public class BooksServiceTest {
 	}
 
 	@Test
-	public void shouldDeleteBookTest() throws BookStoreServiceException {
+	public void shouldDeleteBookByIdTest() throws BookStoreServiceException {
 		Mockito.doNothing().when(booksRepository).deleteById(book.getId());
 
 		booksService.deleteBook(book.getId());
@@ -221,7 +229,7 @@ public class BooksServiceTest {
 	}
 
 	@Test
-	public void shouldThrowExceptionWhenDeletedBookIdIsNullTest() {
+	public void shouldThrowExceptionWhenDeleteBookWithNullIdTest() {
 		try {
 			booksService.deleteBook(null);
 		} catch (final BookStoreServiceException e) {
@@ -231,7 +239,7 @@ public class BooksServiceTest {
 	}
 
 	@Test
-	public void shouldThrowExceptionWhenDeletedBookIdIsNotCorrectTest() {
+	public void shouldThrowExceptionWhenDeleteBookWithNotCorrectIdTest() {
 		try {
 			booksService.deleteBook(250L);
 		} catch (final BookStoreServiceException e) {

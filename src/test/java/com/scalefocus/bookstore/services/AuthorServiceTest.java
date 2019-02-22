@@ -67,20 +67,6 @@ public class AuthorServiceTest {
 		assertNotNull(authorResult);
 	}
 
-//	@Test(expected = BookStoreServiceException.class)
-//	public void shouldThrowExceptionWhenGetAuthorByNullIdTest() throws BookStoreServiceException {
-//		author.setId(null);
-//		author = authorServices.getAuthorById(author.getId());
-//
-//	}
-
-//	@Test(expected = BookStoreServiceException.class)
-//	public void shouldThrowExceptionWhenAuthorNotFoundById() throws BookStoreServiceException {
-//		Mockito.when(authorRepository.findById(200L)).thenReturn(Optional.ofNullable(null));
-//		final Authors authorsTest = authorServices.getAuthorById(200L);
-//
-//	}
-
 	@Test
 	public void shouldAddAuthorTest() throws BookStoreServiceException {
 		Mockito.when(authorRepository.save(Mockito.any(Authors.class))).thenReturn(author);
@@ -90,7 +76,7 @@ public class AuthorServiceTest {
 	}
 
 	@Test
-	public void shouldThrowExceptionWhenAddExistingAuthorNameTest() throws BookStoreServiceException {
+	public void shouldThrowExceptionWhenAddExistingAuthorTest() throws BookStoreServiceException {
 		final String name = author.getName();
 		Mockito.when(authorRepository.findByName(name)).thenReturn(author);
 		try {
@@ -99,14 +85,12 @@ public class AuthorServiceTest {
 			Mockito.verify(authorRepository, Mockito.times(1)).findByName(name);
 			assertEquals(e.getErrorCode(), ErrorMessages.AUTHOR_ALREADY_EXISTS.getId());
 			assertEquals(e.getErrorMsg(), ErrorMessages.AUTHOR_ALREADY_EXISTS.getMessege());
-			Mockito.verifyNoMoreInteractions(authorRepository);
-			Mockito.verify(authorRepository, Mockito.times(0)).save(author);
 		}
 
 	}
 
 	@Test
-	public void shloudThrowNullValueExpectedExceptionWhenIdIsNullTest() {
+	public void shloudThrowExceptionWhenGetBookByNullIdITest() {
 		author.setId(null);
 		Mockito.when(authorRepository.findById(author.getId())).thenReturn(null);
 		try {
@@ -118,7 +102,7 @@ public class AuthorServiceTest {
 	}
 
 	@Test
-	public void shouldThrowAuthorNotFoundExceptionWhenIdNotCorrectTest() {
+	public void shouldThrowExceptionWhenGetBookByNotCorrectIdTest() {
 		author.setId(250L);
 		Mockito.when(authorRepository.findById(author.getId())).thenReturn(Optional.ofNullable(author));
 		try {
@@ -132,7 +116,7 @@ public class AuthorServiceTest {
 	}
 
 	@Test
-	public void shouldThrowNullValueExceptionWhenAddedAuthorIsNullTest() {
+	public void shouldThrowExceptionWhenAddedAuthorIsNullTest() {
 		author = null;
 		try {
 			authorServices.addAuthors(author);
@@ -142,4 +126,33 @@ public class AuthorServiceTest {
 		}
 	}
 
+	@Test
+	public void shouldDeleteAuthorByEnteredIdTest() throws BookStoreServiceException {
+		Mockito.doNothing().when(authorRepository).deleteById(author.getId());
+
+		authorServices.deleteAuthorById(author.getId());
+
+		Mockito.verify(authorRepository, Mockito.times(1)).deleteById(author.getId());
+
+	}
+
+	@Test
+	public void shouldThrowExceptionWhenDeletedeAuthorWithNullIdTest() {
+		try {
+			authorServices.deleteAuthorById(null);
+		} catch (final BookStoreServiceException e) {
+			assertEquals(e.getErrorCode(), ErrorMessages.NULL_VALUE.getId());
+			assertEquals(e.getErrorMsg(), ErrorMessages.NULL_VALUE.getMessege());
+		}
+	}
+
+	@Test
+	public void shouldThrowExceptionWhenDeleteAuthorWithNotCorrectIdTest() {
+		try {
+			authorServices.deleteAuthorById(260L);
+		} catch (final BookStoreServiceException e) {
+			assertEquals(e.getErrorCode(), ErrorMessages.AUTHOR_NOT_FOUND.getId());
+			assertEquals(e.getErrorMsg(), ErrorMessages.AUTHOR_NOT_FOUND.getMessege());
+		}
+	}
 }

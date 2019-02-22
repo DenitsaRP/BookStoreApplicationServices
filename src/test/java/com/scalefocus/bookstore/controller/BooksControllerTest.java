@@ -96,7 +96,7 @@ public class BooksControllerTest {
 	}
 
 	@Test
-	public void shoudthrowNullvalueExceptionWhenGetBookNullIdTest() {
+	public void shoudthrowExceptionWhenGetBookByNullIdTest() {
 		final BooksController booksController = new BooksController(booksService);
 		try {
 			booksController.getSingleBook(null);
@@ -130,13 +130,24 @@ public class BooksControllerTest {
 	}
 
 	@Test
-	public void shouldThrowNullValueExceptionWhenNullBookIsAddedTest() {
+	public void shouldThrowExceptionWhenNullBookIsAddedTest() {
 		final BooksController booksController = new BooksController(booksService);
 		try {
 			booksController.addBooks(null);
 		} catch (final BookStoreServiceException e) {
 			assertEquals(e.getErrorCode(), ErrorMessages.NULL_VALUE.getId());
 			assertEquals(e.getErrorMsg(), ErrorMessages.NULL_VALUE.getMessege());
+		}
+	}
+
+	@Test
+	public void shouldThrowExceptionWhenAddedBookAlredyExistsTest() {
+		final BooksController booksController = new BooksController(booksService);
+		try {
+			booksController.addBooks(book);
+		} catch (final BookStoreServiceException e) {
+			assertEquals(e.getErrorCode(), ErrorMessages.BOOK_ALREDY_EXISTS.getId());
+			assertEquals(e.getErrorMsg(), ErrorMessages.BOOK_ALREDY_EXISTS.getMessege());
 		}
 	}
 
@@ -185,7 +196,7 @@ public class BooksControllerTest {
 	}
 
 	@Test
-	public void shouldDeleteElementTest() throws BookStoreServiceException {
+	public void shouldDeleteBookByIdTest() throws BookStoreServiceException {
 		final BooksController booksController = new BooksController(booksService);
 		Mockito.doNothing().when(booksService).deleteBook(book.getId());
 
@@ -195,7 +206,7 @@ public class BooksControllerTest {
 	}
 
 	@Test
-	public void shouldThrowExceptionWhenDeletedWhenWrongBookIdIsEnteredForDeleteTest() {
+	public void shouldThrowExceptionWhenBookIdIsEnteredForDeleteTest() {
 		final BooksController booksController = new BooksController(booksService);
 		try {
 			booksController.deleteBookById(250L);

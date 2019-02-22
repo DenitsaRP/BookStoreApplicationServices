@@ -29,6 +29,7 @@ public class AuthorsControllerTest {
 	public void setUpTest() {
 		MockitoAnnotations.initMocks(this);
 		author = new Authors(10L, "Author's name", "Description");
+
 		authorsList = new AuthorsList(Arrays.asList(author));
 	}
 
@@ -58,7 +59,7 @@ public class AuthorsControllerTest {
 	}
 
 	@Test
-	public void shouldThrowExceptionWhenAuthorIsGetByWrongIdTest() {
+	public void shouldThrowExceptionWhenGetAuthorByWrongIdTest() {
 		final AuthorsController authorsController = new AuthorsController(authorServices);
 		try {
 			authorsController.getSingleAuthor(250L);
@@ -69,7 +70,7 @@ public class AuthorsControllerTest {
 	}
 
 	@Test
-	public void shouldThrowExceptionWhenaAuthorIsGetByNullIdTest() {
+	public void shouldThrowExceptionWhenaGetAuthorByNullIdTest() {
 		final AuthorsController authorsController = new AuthorsController(authorServices);
 		try {
 			authorsController.getSingleAuthor(null);
@@ -99,6 +100,40 @@ public class AuthorsControllerTest {
 			assertEquals(e.getErrorCode(), ErrorMessages.AUTHOR_ALREADY_EXISTS.getId());
 			assertEquals(e.getErrorMsg(), ErrorMessages.AUTHOR_ALREADY_EXISTS.getMessege());
 		}
+	}
+
+	@Test
+	public void shouldDeleteAuthorByIdTest() throws BookStoreServiceException {
+		final AuthorsController authorsController = new AuthorsController(authorServices);
+		Mockito.doNothing().when(authorServices).deleteAuthorById(author.getId());
+
+		authorsController.deleteAuthorById(author.getId());
+
+		Mockito.verify(authorServices, Mockito.times(1)).deleteAuthorById(author.getId());
+
+	}
+
+	@Test
+	public void shouldThrowExceptionWhennWrongAuthorIdIsEnteredForDeleteTest() {
+		final AuthorsController authorsController = new AuthorsController(authorServices);
+		try {
+			authorsController.deleteAuthorById(250L);
+		} catch (final BookStoreServiceException e) {
+			assertEquals(e.getErrorCode(), ErrorMessages.AUTHOR_NOT_FOUND.getId());
+			assertEquals(e.getErrorMsg(), ErrorMessages.AUTHOR_NOT_FOUND.getMessege());
+		}
+	}
+
+	@Test
+	public void shouldThrowExceptionWhenNullAuthorIdIsEnteredForDeleteTest() {
+		final AuthorsController authorsController = new AuthorsController(authorServices);
+		try {
+			authorsController.deleteAuthorById(null);
+		} catch (final BookStoreServiceException e) {
+			assertEquals(e.getErrorCode(), ErrorMessages.NULL_VALUE.getId());
+			assertEquals(e.getErrorMsg(), ErrorMessages.NULL_VALUE.getMessege());
+		}
+
 	}
 
 }
