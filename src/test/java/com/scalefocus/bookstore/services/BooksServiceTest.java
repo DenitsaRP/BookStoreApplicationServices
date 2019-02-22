@@ -210,4 +210,12 @@ public class BooksServiceTest {
 		}
 	}
 
+	@Test
+	public void shouldDeleteBookTest() {
+		Mockito.doNothing().when(booksRepository).deleteById(book.getId());
+		booksService.deleteBook(book.getId());
+		Mockito.verify(booksRepository, Mockito.times(1)).deleteById(book.getId());
+
+	}
+
 }

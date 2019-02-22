@@ -16,4 +16,6 @@ public interface IBooksService {
 	Books addBooks(Books book) throws BookStoreServiceException;
 
 	Authors getAuthorByBookId(Long bookId) throws BookStoreServiceException;
+
+	void deleteBook(Long bookId);
 }
