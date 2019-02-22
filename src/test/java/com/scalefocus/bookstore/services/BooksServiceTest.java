@@ -211,11 +211,32 @@ public class BooksServiceTest {
 	}
 
 	@Test
-	public void shouldDeleteBookTest() {
+	public void shouldDeleteBookTest() throws BookStoreServiceException {
 		Mockito.doNothing().when(booksRepository).deleteById(book.getId());
+
 		booksService.deleteBook(book.getId());
+
 		Mockito.verify(booksRepository, Mockito.times(1)).deleteById(book.getId());
 
 	}
 
+	@Test
+	public void shouldThrowExceptionWhenDeletedBookIdIsNullTest() {
+		try {
+			booksService.deleteBook(null);
+		} catch (final BookStoreServiceException e) {
+			assertEquals(e.getErrorCode(), ErrorMessages.NULL_VALUE.getId());
+			assertEquals(e.getErrorMsg(), ErrorMessages.NULL_VALUE.getMessege());
+		}
+	}
+
+	@Test
+	public void shouldThrowExceptionWhenDeletedBookIdIsNotCorrectTest() {
+		try {
+			booksService.deleteBook(250L);
+		} catch (final BookStoreServiceException e) {
+			assertEquals(e.getErrorCode(), ErrorMessages.BOOK_NOT_FOUND.getId());
+			assertEquals(e.getErrorMsg(), ErrorMessages.BOOK_NOT_FOUND.getMessege());
+		}
+	}
 }

@@ -68,4 +68,15 @@ public class BooksService implements IBooksService {
 		return booksRepository.save(book);
 	}
 
+	@Override
+	public void deleteBook(Long bookId) throws BookStoreServiceException {
+		if (bookId == null) {
+			throw new BookStoreServiceException(ErrorMessages.NULL_VALUE);
+		}
+		if (booksRepository.findById(bookId) == null) {
+			throw new BookStoreServiceException(ErrorMessages.BOOK_NOT_FOUND);
+		}
+		booksRepository.deleteById(bookId);
+	}
+
 }

@@ -2,6 +2,7 @@ package com.scalefocus.bookstore.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -55,6 +56,11 @@ public class BooksController {
 			return booksService.setBookAuthor(bookId, author);
 		}
 		return null;
+	}
+
+	@DeleteMapping(value = "/delete/{bookId}")
+	public void deleteBookById(@PathVariable Long bookId) throws BookStoreServiceException {
+		booksService.deleteBook(bookId);
 	}
 
 //	@GetMapping("/string")
