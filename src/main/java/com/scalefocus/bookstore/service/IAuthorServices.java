@@ -8,8 +8,10 @@ public interface IAuthorServices {
 
 	AuthorsList getAuthorsInBookstore();
 
-	Authors getAuthorById(Long id) throws BookStoreServiceException;
+	Authors getAuthorById(Long authorId) throws BookStoreServiceException;
 
 	Authors addAuthors(Authors author) throws BookStoreServiceException;
+
+	void deleteAuthorById(Long authorId) throws BookStoreServiceException;
 
 }

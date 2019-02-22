@@ -43,4 +43,15 @@ public class AuthorsService implements IAuthorServices {
 		return authorRepository.save(author);
 	}
 
+	@Override
+	public void deleteAuthorById(Long authorId) throws BookStoreServiceException {
+		if (authorId == null) {
+			throw new BookStoreServiceException(ErrorMessages.NULL_VALUE);
+		}
+		if (authorRepository.findById(authorId) == null) {
+			throw new BookStoreServiceException(ErrorMessages.AUTHOR_NOT_FOUND);
+		}
+		authorRepository.deleteById(authorId);
+	}
+
 }
