@@ -38,7 +38,7 @@ public class AuthorServiceTest {
 	@Before
 	public void setUpTest() {
 		MockitoAnnotations.initMocks(this);
-		author = new Authors(10L, "Author's name", "Description");
+		author = new Authors(10L, "Author's name", "Description", "Genre");
 		authorsList = new AuthorsList(Arrays.asList(author));
 	}
 

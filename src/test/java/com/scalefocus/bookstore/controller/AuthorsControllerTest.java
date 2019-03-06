@@ -28,7 +28,7 @@ public class AuthorsControllerTest {
 	@Before
 	public void setUpTest() {
 		MockitoAnnotations.initMocks(this);
-		author = new Authors(10L, "Author's name", "Description");
+		author = new Authors(10L, "Author's name", "Description", "Genre");
 
 		authorsList = new AuthorsList(Arrays.asList(author));
 	}
@@ -52,7 +52,7 @@ public class AuthorsControllerTest {
 	@Test
 	public void shouldAddAuthorTest() throws BookStoreServiceException {
 		final AuthorsController authorsController = new AuthorsController(authorServices);
-		final Authors newAuthor = new Authors(20L, "NewName", "NewDescription");
+		final Authors newAuthor = new Authors(20L, "NewName", "NewDescription", "NewGenre");
 		Mockito.when(authorServices.addAuthors(newAuthor)).thenReturn(newAuthor);
 
 		assertEquals(newAuthor, authorsController.addAuthor(newAuthor));

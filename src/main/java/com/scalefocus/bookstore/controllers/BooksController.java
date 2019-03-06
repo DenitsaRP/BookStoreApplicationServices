@@ -33,7 +33,7 @@ public class BooksController {
 		return booksService.getAllBooksInBookstore();
 	}
 
-	@GetMapping(value = "/{book_id}", produces = { MediaType.APPLICATION_JSON_VALUE })
+	@GetMapping(value = "/{bookId}", produces = { MediaType.APPLICATION_JSON_VALUE })
 	public Books getSingleBook(@PathVariable Long bookId) throws BookStoreServiceException {
 		return booksService.getBookById(bookId);
 	}

@@ -40,9 +40,9 @@ public class BooksServiceTest {
 	@Before
 	public void bookSetUp() {
 		MockitoAnnotations.initMocks(this);
-		author = new Authors(10L, "Author", "AuthorDescription");
-		book = new Books(1L, "name", author, "description");
-		bookSetAuthor = new Books(11L, "nameOfTheBook", null, "Ddescription");
+		author = new Authors(10L, "Author", "AuthorDescription", "Genre");
+		book = new Books(1L, 12345L, "name", author, "description");
+		bookSetAuthor = new Books(11L, 54321L, "nameOfTheBook", null, "Ddescription");
 
 		booksList = new BooksList(Arrays.asList(book));
 	}

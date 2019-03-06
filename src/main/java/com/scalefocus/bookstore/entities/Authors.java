@@ -24,25 +24,29 @@ import lombok.ToString;
 @NoArgsConstructor
 @EqualsAndHashCode
 @Entity
-@Table(name = "author")
+@Table(name = "authors")
 public class Authors implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "author_id")
+	@Column(name = "T_AUTHOR_ID", nullable = false)
 	private Long id;
 
 	@NotNull
-	@Column(name = "name")
+	@Column(name = "T_AUTHOR_NAME", nullable = false, length = 50 )
 	private String name;
 
 	@NotNull
-	@Column(name = "description")
+	@Column(name = "T_AUTHOR_DESC", nullable = false, length = 250)
 	private String description;
+	
+	@NotNull
+	@Column(name = "T_AUTHOR_GENRE", nullable = false, length = 50)
+	private String genre;
 
-//	@OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
+//	@OneToMany(mappedBy = "authors", fetch = FetchType.LAZY)
 //	@JsonManagedReference
 //	private Set<Books> books = new HashSet<Books>();
 

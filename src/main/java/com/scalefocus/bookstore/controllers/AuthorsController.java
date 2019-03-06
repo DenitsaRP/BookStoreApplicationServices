@@ -31,9 +31,9 @@ public class AuthorsController {
 		return authorService.getAuthorsInBookstore();
 	}
 
-	@GetMapping(value = "/{author_id}", produces = { MediaType.APPLICATION_JSON_VALUE })
-	public Authors getSingleAuthor(@PathVariable Long author_id) throws BookStoreServiceException {
-		return authorService.getAuthorById(author_id);
+	@GetMapping(value = "/{authorId}", produces = { MediaType.APPLICATION_JSON_VALUE })
+	public Authors getSingleAuthor(@PathVariable Long authorId) throws BookStoreServiceException {
+		return authorService.getAuthorById(authorId);
 	}
 
 	@PostMapping(name = "/addAuthor", consumes = { MediaType.APPLICATION_JSON_VALUE }, produces = {

@@ -4,7 +4,6 @@ import com.scalefocus.bookstore.enums.ErrorMessages;
 
 public class BookStoreServiceException extends Exception {
 
-	// TODO Add ENUM VALUE TO Constructor
 
 	private static final long serialVersionUID = -1307493420921168255L;
 	private final int exceptionCode;

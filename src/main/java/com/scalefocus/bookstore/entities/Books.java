@@ -26,26 +26,33 @@ public class Books implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "book_id")
+	@Column(name = "T_BOOK_ID")
 	private Long id;
 
 	@NotNull
-	@Column(name = "name")
+	@Column(name = "T_BOOK_ISBN", nullable = false)
+	private Long isbn;
+
+	@NotNull
+	@Column(name = "T_BOOK_NAME", nullable = false, length = 150)
 	private String name;
+	
+
+	@Column(name = "T_BOOK_DESC", nullable = false, length = 250)
+	private String description;
 
 	@ManyToOne
-	@JoinColumn(name = "author_id")
+	@JoinColumn(name = "T_BOOK_AUTHOR_ID")
 	private Authors author;
 
-	@Column(name = "description")
-	private String description;
 
 	public Books() {
 	}
 
-	public Books(Long id, String name, Authors author, String description) {
+	public Books(Long id, Long isbn, String name, Authors author, String description) {
 		this();
 		this.id = id;
+		this.isbn = isbn;
 		this.name = name;
 		this.author = author;
 		this.description = description;
@@ -65,11 +72,13 @@ public class Books implements Serializable {
 
 		final Books book = (Books) object;
 //		return book.getId() == id //
+//			&& isbn == book.getIsbn()//
 //				&& book.getName().equals(name) //
 //				&& book.getDescription().equals(description)//
 //				&& book.getAuthor().equals(author);
 
 		return id == book.getId()//
+				&& isbn == book.getIsbn()//
 				&& Objects.equals(name, book.getName())//
 				&& Objects.equals(description, book.getDescription()) //
 				&& Objects.equals(author, book.getAuthor());
@@ -89,6 +98,7 @@ public class Books implements Serializable {
 	@Override
 	public String toString() {
 		return "Book's id: " + id + ", "//
+				+ "Book's ISBN: " + isbn + ", "//
 				+ "Book's name: " + this.name + ", " //
 				+ "Book's author: " + this.author.getName() + " , " //
 				+ "Book's description: " + this.description;
