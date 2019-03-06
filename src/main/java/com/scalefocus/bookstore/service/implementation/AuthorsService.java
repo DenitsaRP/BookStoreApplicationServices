@@ -54,4 +54,13 @@ public class AuthorsService implements IAuthorServices {
 		authorRepository.deleteById(authorId);
 	}
 
+	@Override
+	public Authors updateAuthor(Authors newAuthor) throws BookStoreServiceException {
+		Authors oldAuthor = getAuthorById(newAuthor.getId());
+		oldAuthor.setName(newAuthor.getName());
+		oldAuthor.setDescription(newAuthor.getDescription());
+		oldAuthor.setGenre(newAuthor.getGenre());
+		return authorRepository.save(oldAuthor);
+	}
+
 }
