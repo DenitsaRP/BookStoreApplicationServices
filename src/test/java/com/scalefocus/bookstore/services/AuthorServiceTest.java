@@ -50,7 +50,6 @@ public class AuthorServiceTest {
 
 		Mockito.verify(authorRepository, Mockito.times(1)).findAll();
 		assertEquals(authorsListResult.getListAuthors(), authorsList.getListAuthors());
-		assertNotNull(authorsListResult.getListAuthors());
 		assertEquals(1, authorsListResult.getListAuthors().size());
 
 	}
@@ -70,9 +69,24 @@ public class AuthorServiceTest {
 	@Test
 	public void shouldAddAuthorTest() throws BookStoreServiceException {
 		Mockito.when(authorRepository.save(Mockito.any(Authors.class))).thenReturn(author);
+		
 		final Authors authorResult = authorServices.addAuthors(author);
+		
 		Mockito.verify(authorRepository, Mockito.times(1)).save(author);
 		assertEquals(authorResult, author);
+	}
+	
+	@Test//?????????????
+	public void shouldUpdateAuthorTest() throws BookStoreServiceException{
+		final Optional<Authors> optionalAuthor = Optional.ofNullable(author);
+		Mockito.when(authorRepository.findById(Mockito.anyLong())).thenReturn(optionalAuthor);
+
+		Authors newAuthor = new Authors(10L, "name", "desc", "drama");
+		Mockito.when(authorRepository.save(newAuthor)).thenReturn(author);
+	
+		Authors updateAuthor = authorServices.updateAuthor(newAuthor);
+		
+		assertEquals(updateAuthor, author);
 	}
 
 	@Test
