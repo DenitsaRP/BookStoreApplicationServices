@@ -43,6 +43,7 @@ public class AuthorsController {
 		return authorService.addAuthors(newAuthor);
 	}
 
+<<<<<<< HEAD
 	@PutMapping(value = "/update", consumes = { MediaType.APPLICATION_JSON_VALUE }, produces = {
 			MediaType.APPLICATION_JSON_VALUE })
 	public Authors updateAuthor(@RequestBody Authors newAuthor) throws BookStoreServiceException {
@@ -50,6 +51,8 @@ public class AuthorsController {
 		
 	}
 
+=======
+>>>>>>> 522c0fb016380232936abaef2767f5c932f0d75e
 	@DeleteMapping(value = "/delete/{authorId}")
 	public void deleteAuthorById(@PathVariable Long authorId) throws BookStoreServiceException {
 		authorService.deleteAuthorById(authorId);

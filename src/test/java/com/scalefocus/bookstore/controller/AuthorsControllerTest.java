@@ -28,7 +28,11 @@ public class AuthorsControllerTest {
 	@Before
 	public void setUpTest() {
 		MockitoAnnotations.initMocks(this);
+<<<<<<< HEAD
 		author = new Authors(10L, "Author's name", "Description", "Genre");
+=======
+		author = new Authors(10L, "Author's name", "Description");
+>>>>>>> 522c0fb016380232936abaef2767f5c932f0d75e
 
 		authorsList = new AuthorsList(Arrays.asList(author));
 	}

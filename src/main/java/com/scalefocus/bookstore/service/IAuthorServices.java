@@ -13,7 +13,10 @@ public interface IAuthorServices {
 	Authors addAuthors(Authors author) throws BookStoreServiceException;
 
 	void deleteAuthorById(Long authorId) throws BookStoreServiceException;
+<<<<<<< HEAD
 	
 	Authors updateAuthor(Authors author) throws BookStoreServiceException;
+=======
+>>>>>>> 522c0fb016380232936abaef2767f5c932f0d75e
 
 }

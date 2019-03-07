@@ -54,6 +54,7 @@ public class AuthorsService implements IAuthorServices {
 		authorRepository.deleteById(authorId);
 	}
 
+<<<<<<< HEAD
 	@Override
 	public Authors updateAuthor(Authors newAuthor) throws BookStoreServiceException {
 		Authors oldAuthor = getAuthorById(newAuthor.getId());
@@ -63,4 +64,6 @@ public class AuthorsService implements IAuthorServices {
 		return authorRepository.save(oldAuthor);
 	}
 
+=======
+>>>>>>> 522c0fb016380232936abaef2767f5c932f0d75e
 }
