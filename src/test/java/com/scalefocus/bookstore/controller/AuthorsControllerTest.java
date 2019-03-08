@@ -28,12 +28,8 @@ public class AuthorsControllerTest {
 	@Before
 	public void setUpTest() {
 		MockitoAnnotations.initMocks(this);
-<<<<<<< HEAD
-		author = new Authors(10L, "Author's name", "Description", "Genre");
-=======
-		author = new Authors(10L, "Author's name", "Description");
->>>>>>> 522c0fb016380232936abaef2767f5c932f0d75e
 
+		author = new Authors(10L, "Author's name", "Description", "Genre");
 		authorsList = new AuthorsList(Arrays.asList(author));
 	}
 
@@ -62,6 +58,15 @@ public class AuthorsControllerTest {
 		assertEquals(newAuthor, authorsController.addAuthor(newAuthor));
 	}
 
+	@Test
+	public void shouldUpdateAuthorTest() throws BookStoreServiceException{
+		AuthorsController authorsController = new AuthorsController(authorServices);
+		Authors authorsForUpdate = new Authors(10L, "NewName", "NewDescription", "NewGenre");
+		Mockito.when(authorServices.updateAuthor(authorsForUpdate)).thenReturn(authorsForUpdate);
+		
+		assertEquals(authorsForUpdate, authorsController.updateAuthor(authorsForUpdate));
+	}
+	
 	@Test
 	public void shouldThrowExceptionWhenGetAuthorByWrongIdTest() {
 		final AuthorsController authorsController = new AuthorsController(authorServices);
@@ -138,6 +143,32 @@ public class AuthorsControllerTest {
 			assertEquals(e.getErrorMsg(), ErrorMessages.NULL_VALUE.getMessege());
 		}
 
+	}
+	
+	@Test
+	public void shouldThrowExceptionWhenAuthorForUpdateNotFoound() {
+		AuthorsController authorsController = new AuthorsController(authorServices);
+		
+		Authors authorsWrongId = new Authors(250L,"Author's name", "Description", "Genre");
+		try {
+			
+			authorsController.updateAuthor(authorsWrongId);
+		} catch (BookStoreServiceException e) {
+			assertEquals(e.getErrorCode(), ErrorMessages.AUTHOR_NOT_FOUND.getId());
+			assertEquals(e.getErrorMsg(), ErrorMessages.AUTHOR_NOT_FOUND.getMessege());
+		}
+	}
+	
+	@Test
+	public void shouldThrowExceptionWhenAuthorForUpadeteIsNull() {
+		AuthorsController authorsController = new AuthorsController(authorServices);
+		
+		try {
+			authorsController.updateAuthor(null);
+		} catch (BookStoreServiceException e) {
+			assertEquals(e.getErrorCode(), ErrorMessages.NULL_VALUE.getId());
+			assertEquals(e.getErrorMsg(), ErrorMessages.NULL_VALUE.getMessege());
+		}
 	}
 
 }

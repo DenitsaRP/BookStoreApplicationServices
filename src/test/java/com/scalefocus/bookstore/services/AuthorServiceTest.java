@@ -2,6 +2,7 @@ package com.scalefocus.bookstore.services;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.Optional;
@@ -15,6 +16,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.scalefocus.bookstore.controllers.AuthorsController;
 import com.scalefocus.bookstore.entities.Authors;
 import com.scalefocus.bookstore.entities.AuthorsList;
 import com.scalefocus.bookstore.enums.ErrorMessages;
@@ -69,24 +71,34 @@ public class AuthorServiceTest {
 	@Test
 	public void shouldAddAuthorTest() throws BookStoreServiceException {
 		Mockito.when(authorRepository.save(Mockito.any(Authors.class))).thenReturn(author);
-		
+
 		final Authors authorResult = authorServices.addAuthors(author);
-		
+
 		Mockito.verify(authorRepository, Mockito.times(1)).save(author);
 		assertEquals(authorResult, author);
 	}
-	
-	@Test//?????????????
-	public void shouldUpdateAuthorTest() throws BookStoreServiceException{
+
+	@Test
+	public void shouldUpdateAuthorTest() throws BookStoreServiceException {
 		final Optional<Authors> optionalAuthor = Optional.ofNullable(author);
 		Mockito.when(authorRepository.findById(Mockito.anyLong())).thenReturn(optionalAuthor);
 
 		Authors newAuthor = new Authors(10L, "name", "desc", "drama");
 		Mockito.when(authorRepository.save(newAuthor)).thenReturn(author);
-	
+
 		Authors updateAuthor = authorServices.updateAuthor(newAuthor);
-		
+
 		assertEquals(updateAuthor, author);
+	}
+
+	@Test
+	public void shouldDeleteAuthorByEnteredIdTest() throws BookStoreServiceException {
+		Mockito.doNothing().when(authorRepository).deleteById(author.getId());
+
+		authorServices.deleteAuthorById(author.getId());
+
+		Mockito.verify(authorRepository, Mockito.times(1)).deleteById(author.getId());
+
 	}
 
 	@Test
@@ -141,13 +153,25 @@ public class AuthorServiceTest {
 	}
 
 	@Test
-	public void shouldDeleteAuthorByEnteredIdTest() throws BookStoreServiceException {
-		Mockito.doNothing().when(authorRepository).deleteById(author.getId());
+	public void shouldThrowExceptionWhenAuthorForUpdateNotFoound() {
+		Authors newAuthor = new Authors(250L, "Author's name", "Description", "Genre");
+		try {
+			authorServices.updateAuthor(newAuthor);
+		} catch (BookStoreServiceException e) {
+			assertEquals(e.getErrorCode(), ErrorMessages.AUTHOR_NOT_FOUND.getId());
+			assertEquals(e.getErrorMsg(), ErrorMessages.AUTHOR_NOT_FOUND.getMessege());
+		}
+	}
+	@Test
+	public void shouldThrowExceptionWhenAuthorForUpadeteIsNull() {
 
-		authorServices.deleteAuthorById(author.getId());
-
-		Mockito.verify(authorRepository, Mockito.times(1)).deleteById(author.getId());
-
+		AuthorsController authorsController = new AuthorsController(authorServices);
+		try {
+			authorsController.updateAuthor(null);
+		} catch (BookStoreServiceException e) {
+			assertEquals(e.getErrorCode(), ErrorMessages.NULL_VALUE.getId());
+			assertEquals(e.getErrorMsg(), ErrorMessages.NULL_VALUE.getMessege());
+		}
 	}
 
 	@Test
