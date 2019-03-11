@@ -44,6 +44,15 @@ public class AuthorsService implements IAuthorServices {
 	}
 
 	@Override
+	public Authors updateAuthor(Authors newAuthor) throws BookStoreServiceException {
+		Authors oldAuthor = getAuthorById(newAuthor.getId());
+		oldAuthor.setName(newAuthor.getName());
+		oldAuthor.setDescription(newAuthor.getDescription());
+		oldAuthor.setGenre(newAuthor.getGenre());
+		return authorRepository.save(oldAuthor);
+	}
+	
+	@Override
 	public void deleteAuthorById(Long authorId) throws BookStoreServiceException {
 		if (authorId == null) {
 			throw new BookStoreServiceException(ErrorMessages.NULL_VALUE);
@@ -55,14 +64,6 @@ public class AuthorsService implements IAuthorServices {
 	}
 
 
-	@Override
-	public Authors updateAuthor(Authors newAuthor) throws BookStoreServiceException {
-		Authors oldAuthor = getAuthorById(newAuthor.getId());
-		oldAuthor.setName(newAuthor.getName());
-		oldAuthor.setDescription(newAuthor.getDescription());
-		oldAuthor.setGenre(newAuthor.getGenre());
-		return authorRepository.save(oldAuthor);
-	}
 
 
 }

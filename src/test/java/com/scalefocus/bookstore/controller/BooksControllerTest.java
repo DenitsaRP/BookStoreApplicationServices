@@ -82,7 +82,19 @@ public class BooksControllerTest {
 		Mockito.when(booksService.setBookAuthor(book.getId(), author)).thenReturn(book);
 
 		assertEquals(book, booksController.setBookAuthor(author, book.getId()));
+	
 	}
+	
+	@Test
+	public void shouldDeleteBookByIdTest() throws BookStoreServiceException {
+		final BooksController booksController = new BooksController(booksService);
+		Mockito.doNothing().when(booksService).deleteBook(book.getId());
+
+		booksController.deleteBookById(book.getId());
+
+		Mockito.verify(booksService, Mockito.times(1)).deleteBook(book.getId());
+	}
+	
 
 	@Test
 	public void shouldThrowExceptionWhenGetBookByWrongIdTest() {
@@ -195,15 +207,7 @@ public class BooksControllerTest {
 		}
 	}
 
-	@Test
-	public void shouldDeleteBookByIdTest() throws BookStoreServiceException {
-		final BooksController booksController = new BooksController(booksService);
-		Mockito.doNothing().when(booksService).deleteBook(book.getId());
 
-		booksController.deleteBookById(book.getId());
-
-		Mockito.verify(booksService, Mockito.times(1)).deleteBook(book.getId());
-	}
 
 	@Test
 	public void shouldThrowExceptionWhenBookIdIsEnteredForDeleteTest() {

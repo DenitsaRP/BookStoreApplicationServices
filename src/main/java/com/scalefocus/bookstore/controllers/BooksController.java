@@ -57,6 +57,13 @@ public class BooksController {
 		}
 		return null;
 	}
+	
+	@PutMapping(value = "/update", consumes = { MediaType.APPLICATION_JSON_VALUE }, produces = {
+			MediaType.APPLICATION_JSON_VALUE } )
+	public Books updateBook(@RequestBody Books newBook) throws BookStoreServiceException {
+		return booksService.updateBook(newBook);
+	
+	}
 
 	@DeleteMapping(value = "/delete/{bookId}")
 	public void deleteBookById(@PathVariable Long bookId) throws BookStoreServiceException {

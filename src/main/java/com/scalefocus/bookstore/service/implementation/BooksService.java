@@ -67,6 +67,18 @@ public class BooksService implements IBooksService {
 		book.setAuthor(author);
 		return booksRepository.save(book);
 	}
+	
+	@Override
+	public Books updateBook(Books newBook) throws BookStoreServiceException {
+		Books oldBook = getBookById(newBook.getId());
+		
+		oldBook.setName(newBook.getName());
+		oldBook.setIsbn(newBook.getIsbn());
+		oldBook.setAuthor(newBook.getAuthor());
+		oldBook.setDescription(newBook.getDescription());
+		
+		return booksRepository.save(oldBook);
+	}
 
 	@Override
 	public void deleteBook(Long bookId) throws BookStoreServiceException {
@@ -78,5 +90,7 @@ public class BooksService implements IBooksService {
 		}
 		booksRepository.deleteById(bookId);
 	}
+
+
 
 }
